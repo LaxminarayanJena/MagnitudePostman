@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "6a0a72f8-373a-4553-ac49-6fd720ad763c",
+		"name": "Magnitude",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateBookingId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d025b10-c75e-4919-83ed-b3cd6c28c773",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"bookingid\", jsonData.bookingid);",
+							"console.log(\"Booking id is: \"+jsonData.bookingid)",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6d247f27-3e25-4ef1-b17e-31eb3a1356a4",
+						"exec": [
+							"console.log(\"Test Execution started\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{totalprice}},\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\" : \"{{additionalneeds}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/booking",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBookingIdDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "708612d9-ed91-4ff5-8e9c-25a85c1f988b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains first name\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"firstname\");",
+							"});",
+							"",
+							"pm.test(\"Response contains check in date\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"checkin\");",
+							"});",
+							"",
+							"pm.test(\"Response contains check out date\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"checkout\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/booking/{{bookingid}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"booking",
+						"{{bookingid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5556862c-55e2-482f-9bd3-5a805e5138d7",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"cookie\", jsonData.token);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"{{username}}\",\n    \"password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DelBookingId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "53f8634d-6bae-4e66-a370-00d393889b37",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/booking/{{bookingid}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"booking",
+						"{{bookingid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
