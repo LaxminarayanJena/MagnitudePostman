@@ -1,3 +1,13 @@
 Go to the folder location and in cmd
 
 newman run Magnitude.postman_collection.json -e Magnitude.postman_environment.json
+
+
+
+
+
+To generate html report 
+----------------------------------
+npm install --g newman-reporter-htmlextra
+
+newman run Magnitude.postman_collection.json -e Magnitude.postman_environment.json -r htmlextra
