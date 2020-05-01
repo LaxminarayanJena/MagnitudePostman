@@ -1,0 +1,3 @@
+Go to the folder location and in cmd
+
+newman run Magnitude.postman_collection.json -e Magnitude.postman_environment.json
